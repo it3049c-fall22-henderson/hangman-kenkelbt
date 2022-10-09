@@ -85,7 +85,6 @@ class Hangman {
     // check if this.guesses includes the letter. Throw an error if it has been guessed already.
     let i;
     for(i = 0; i < this.guesses.length; i++){
-      console.log(this.guesses[i] + ":" + letter);
       if(this.guesses[i] === letter){
         throw "This letter has already been guessed before.";
       }
@@ -176,7 +175,6 @@ class Hangman {
     let i;
 
     for (i = 0; i < this.word.toString().length; i++) {
-      console.log(this.guesses.includes(wordArray[i]) + " \ " + wordArray[i]);
       if (this.guesses.includes(wordArray[i])) {
         wordHolderTextAr += wordArray[i];
       } else {
