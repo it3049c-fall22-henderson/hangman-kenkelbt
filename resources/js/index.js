@@ -62,15 +62,28 @@ try {
     guessesText = game.getGuessesText();
     guessInput.value = "";
 
-    if(hangman.isOver === true){
-
+    if (hangman.isOver === true) {
+      if (hangman.didWin === true) {
+        alert("You win!");
+      } else {
+        alert("You lose!");
+      }
+      guessForm.classList.add('disabled');
+      guessInput.classList.add('disabled');
+      resetGame.classList.remove('hidden');
     }
   });
 
   // add a click Event Listener to the resetGame button
   //    show the startWrapper
   //    hide the gameWrapper
-  resetGame.addEventListener(`click`, function (e) {});
+  resetGame.addEventListener(`click`, function (e) {
+    startWrapper.classList.remove('hidden');
+    gameWrapper.classList.add('hidden');
+    location.reload();
+    difficultySelect.value[0];
+  });
+  
 } catch (error) {
   console.error(error);
   alert(error);
