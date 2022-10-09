@@ -6,6 +6,11 @@ class Hangman {
 
     this.canvas = _canvas;
     this.ctx = this.canvas.getContext(`2d`);
+    this.word = "";
+    this.isOver = false;
+    this.didWin = false;
+    this.guesses = [];
+    this.incorrectGuesses = 0;
   }
 
   /**
@@ -48,6 +53,8 @@ class Hangman {
 
     // reset this.didWin to false
     this.isOver = false;
+
+    next();
   }
 
   /**
@@ -76,14 +83,16 @@ class Hangman {
     letter = letter.toLowerCase();
 
     // check if this.guesses includes the letter. Throw an error if it has been guessed already.
-    for(let i = 0; i < this.guesses.length; i++){
+    let i;
+    for(i = 0; i < this.guesses.length; i++){
+      console.log(this.guesses[i] + ":" + letter);
       if(this.guesses[i] === letter){
-        throw "This letter has already been guessed before."
+        throw "This letter has already been guessed before.";
       }
     }
 
     // add the new letter to the guesses array.
-    this.guesses.push(this.letter);
+    this.guesses.push(letter);
 
     // check if the word includes the guessed letter:
     if(this.word.toString().includes(letter)){
@@ -112,7 +121,7 @@ class Hangman {
 
     for(i = 0; i < wordLength; i++){
       for(j = 0; j < guessLength; j++){
-        if(this.word.charAt(i) === this.guesses[j]){
+        if(this.word.toString().charAt(i) === this.guesses[j]){
           lettersKnown++;
         }
       }
@@ -162,19 +171,20 @@ class Hangman {
    * i.e.: if the word is BOOK, and the letter O has been guessed, this would return _ O O _
    */
   getWordHolderText() {
-    let wordArray = this.word.split('');
-    let wordHolderText = "";
+    let wordArray = this.word.toString().split('');
+    let wordHolderTextAr = "";
     let i;
 
-    for (i = 0; i < this.word.length; i++) {
+    for (i = 0; i < this.word.toString().length; i++) {
+      console.log(this.guesses.includes(wordArray[i]) + " \ " + wordArray[i]);
       if (this.guesses.includes(wordArray[i])) {
-        wordHolderText += wordArray[i];
+        wordHolderTextAr += wordArray[i];
       } else {
-        wordHolderText += "_ ";
+        wordHolderTextAr += "_ ";
       }
     }
 
-    return wordHolderText;
+    return wordHolderTextAr;
   }
 
   /**

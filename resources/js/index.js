@@ -58,8 +58,8 @@ try {
   guessForm.addEventListener(`submit`, function (e) {
     e.preventDefault();
     hangman.guess(guessInput.value);
-    wordHolderText = game.getWordHolderText();
-    guessesText = game.getGuessesText();
+    wordHolderText.innerHTML = hangman.getWordHolderText();
+    guessesText.innerHTML = hangman.getGuessesText();
     guessInput.value = "";
 
     if (hangman.isOver === true) {
