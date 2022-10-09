@@ -19,7 +19,7 @@ class Hangman {
    * */
   getRandomWord(difficulty) {
     return fetch(
-      `https://hangman-micro-service-bpblrjerwh.now.sh?difficulty=${difficulty}`
+      `https://hangman-micro-service.herokuapp.com/?difficulty=${difficulty}`
     )
       .then((r) => r.json())
       .then((r) => r.word);
@@ -117,6 +117,7 @@ class Hangman {
         }
       }
     }
+
     // if zero, set both didWin, and isOver to true
     if(wordLength - lettersKnown == 0){
       this.didWin = true;
@@ -129,7 +130,31 @@ class Hangman {
    * drawHead, drawBody, drawRightArm, drawLeftArm, drawRightLeg, or drawLeftLeg.
    * if the number wrong guesses is 6, then also set isOver to true and didWin to false.
    */
-  onWrongGuess() {}
+  onWrongGuess() {
+    switch (this.incorrectGuesses) {
+      case 0:
+        this.drawHead();
+        break;
+      case 1:
+        this.drawBody();
+        break;
+      case 2:
+        this.drawLeftArm();
+        break;
+      case 3:
+        this.drawRightArm();
+        break;
+      case 4:
+        this.drawLeftLeg();
+        break;
+      case 5:
+        this.drawRightLeg();
+        this.isOver = true;
+        this.didWin = false;
+        break;
+    }
+    this.incorrectGuesses++;
+  }
 
   /**
    * This function will return a string of the word placeholder
@@ -137,7 +162,19 @@ class Hangman {
    * i.e.: if the word is BOOK, and the letter O has been guessed, this would return _ O O _
    */
   getWordHolderText() {
-    return;
+    let wordArray = this.word.split('');
+    let wordHolderText = "";
+    let i;
+
+    for (i = 0; i < this.word.length; i++) {
+      if (this.guesses.includes(wordArray[i])) {
+        wordHolderText += wordArray[i];
+      } else {
+        wordHolderText += "_ ";
+      }
+    }
+
+    return wordHolderText;
   }
 
   /**
@@ -147,7 +184,11 @@ class Hangman {
    * Hint: use the Array.prototype.join method.
    */
   getGuessesText() {
-    return ``;
+    let guessesText = "Letters Guessed: ";
+
+    guessesText += this.guesses.join(", ");
+
+    return guessesText;
   }
 
   /**
@@ -167,15 +208,51 @@ class Hangman {
     this.ctx.fillRect(10, 410, 175, 10); // Base
   }
 
-  drawHead() {}
+  drawHead() {
+    this.ctx.lineWidth = 4;
+    this.ctx.beginPath();
+    this.ctx.arc(250, 95, 35, 0, Math.PI*2, false);
+    this.ctx.closePath();
+    this.ctx.stroke();
+  }
 
-  drawBody() {}
+  drawBody() {
+    this.ctx.lineWidth = 4;
+    this.ctx.beginPath();
+    this.ctx.moveTo(250, 130);
+    this.ctx.lineTo(250, 240);
+    this.ctx.stroke();
+  }
 
-  drawLeftArm() {}
+  drawLeftArm() {
+    this.ctx.lineWidth = 4;
+    this.ctx.beginPath();
+    this.ctx.moveTo(250, 160);
+    this.ctx.lineTo(185, 250);
+    this.ctx.stroke();
+  }
 
-  drawRightArm() {}
+  drawRightArm() {
+    this.ctx.lineWidth = 4;
+    this.ctx.beginPath();
+    this.ctx.moveTo(250, 160);
+    this.ctx.lineTo(315, 250);
+    this.ctx.stroke();
+  }
 
-  drawLeftLeg() {}
+  drawLeftLeg() {
+    this.ctx.lineWidth = 4;
+    this.ctx.beginPath();
+    this.ctx.moveTo(250, 240);
+    this.ctx.lineTo(185, 335);
+    this.ctx.stroke();
+  }
 
-  drawRightLeg() {}
+  drawRightLeg() {
+    this.ctx.lineWidth = 4;
+    this.ctx.beginPath();
+    this.ctx.moveTo(250, 240);
+    this.ctx.lineTo(315, 335);
+    this.ctx.stroke();
+  }
 }
