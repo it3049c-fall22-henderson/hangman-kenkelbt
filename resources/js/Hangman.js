@@ -32,11 +32,22 @@ class Hangman {
    */
   start(difficulty, next) {
     // get word and set it to the class's this.word
+    this.word = this.getRandomWord(difficulty);
+
     // clear canvas
+    this.clearCanvas();
+
     // draw base
+    this.drawBase();
+
     // reset this.guesses to empty array
+    this.guesses = [];
+
     // reset this.isOver to false
+    this.isOver = false;
+
     // reset this.didWin to false
+    this.isOver = false;
   }
 
   /**
@@ -44,20 +55,73 @@ class Hangman {
    * @param {string} letter the guessed letter.
    */
   guess(letter) {
-    // Check if nothing was provided and throw an error if so
+
+    try {
+      // Check if nothing was provided and throw an error if so
+    if(letter == ""){
+      throw "You did not enter a guess.";
+    }
+
     // Check for invalid cases (numbers, symbols, ...) throw an error if it is
+    if(!/^[a-zA-Z]*$/.test(letter)){
+      throw "You did not type a letter.";
+    }
+
     // Check if more than one letter was provided. throw an error if it is.
+    if(letter.length > 1){
+      throw "You typed more than one letter.";
+    }
+
     // if it's a letter, convert it to lower case for consistency.
+    letter = letter.toLowerCase();
+
     // check if this.guesses includes the letter. Throw an error if it has been guessed already.
+    for(let i = 0; i < this.guesses.length; i++){
+      if(this.guesses[i] === letter){
+        throw "This letter has already been guessed before."
+      }
+    }
+
     // add the new letter to the guesses array.
+    this.guesses.push(this.letter);
+
     // check if the word includes the guessed letter:
+    if(this.word.toString().includes(letter)){
+      this.checkWin();
+    } else {
+      this.onWrongGuess();
+    }
+
     //    if it's is call checkWin()
     //    if it's not call onWrongGuess()
+    }
+    catch (error) {
+      console.error(error);
+      alert(error);
+    }
+    
   }
 
   checkWin() {
     // using the word and the guesses array, figure out how many remaining unknowns.
+    let i;
+    let j;
+    let lettersKnown;
+    let wordLength = this.word.toString().length;
+    let guessLength = this.guesses.length;
+
+    for(i = 0; i < wordLength; i++){
+      for(j = 0; j < guessLength; j++){
+        if(this.word.charAt(i) === this.guesses[j]){
+          lettersKnown++;
+        }
+      }
+    }
     // if zero, set both didWin, and isOver to true
+    if(wordLength - lettersKnown == 0){
+      this.didWin = true;
+      this.isOver = true;
+    }
   }
 
   /**
